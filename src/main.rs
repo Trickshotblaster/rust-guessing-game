@@ -17,7 +17,7 @@ fn main() {
 
 
             println!("You guessed: {guess}");
-            
+
             if &guess.trim() == &stop_word {
                 println!("quit game");
                 break 'outer;
@@ -33,6 +33,7 @@ fn main() {
                 Ordering::Greater => println!("Lower"),
                 Ordering::Equal => {
                     println!("Skedoosh!");
+                    print!("{esc}[2J{esc}[1;1H", esc = 27 as char); // set to the top of the screen
                     break;
                 },
             }
