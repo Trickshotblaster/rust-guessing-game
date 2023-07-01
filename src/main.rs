@@ -3,9 +3,10 @@ use std::cmp::Ordering;
 use rand::Rng;
 
 fn main() {
-    loop {
+    'outer: loop {
         println!("--GUESSING GAME--");
         println!("Input your guess:");
+        let stop_word = "quit";
         let secret_number = rand::thread_rng().gen_range(1..=100);
         loop {
             let mut guess = String::new();
@@ -14,9 +15,18 @@ fn main() {
                 .read_line(&mut guess)
                 .expect("Failed to read line");
 
+
             println!("You guessed: {guess}");
             
-            let guess:i32 = guess.trim().parse().expect("Please type a valid number");
+            if &guess.trim() == &stop_word {
+                println!("quit game");
+                break 'outer;
+            }
+
+            let guess:u32 = match guess.trim().parse() {
+                Ok(num) => num,
+                Err(_) => continue,
+            };
 
             match guess.cmp(&secret_number) {
                 Ordering::Less => println!("Higher"),
